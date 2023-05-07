@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "yup-phone";
+import { addUserService } from "../api/api";
 
 const schema = yup.object().shape({
   name: yup.string().required().min(4),
@@ -12,8 +13,7 @@ const schema = yup.object().shape({
   mobile: yup.string().matches(
     /^[6-9]\d{9}$/,
     "Mobile number must be a valid Indian mobile number"
-  )
-  .nullable(true),
+  ).nullable(true),
   emergency: yup.string().matches(
     /^[6-9]\d{9}$/,
     "Mobile number must be a valid Indian mobile number"
@@ -56,11 +56,13 @@ const Forms = () => {
     resolver: yupResolver(schema),
   });
 
-  const submitForm = (data) => {
+  const submitForm = async(data) => {
     console.log("form submitted", data);
+    await addUserService(data);
     alert("form submitted");
     reset()
   };
+
 
   return (
     <div>
